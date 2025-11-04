@@ -1,0 +1,14 @@
+services:
+    ai-agent:
+        build: .
+        ports:
+          - '8502:8502'
+        env_file:
+          - .env
+        volumes:
+          - ./config:/app/config
+        stdin_open: true
+        tty: true
+        environment:
+          - PYTHONUNBUFFERED=1
+        command: python main.py

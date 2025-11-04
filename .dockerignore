@@ -1,0 +1,14 @@
+# Ignore local virtual environment
+venv/
+.venv/
+# Ignore Python cache files
+__pycache__/
+*.pyc
+# Ignore configuration or log files
+.env
+*.log
+# Ignore Docker artifacts
+Dockerfile
+.dockerignore
+.gitignore
+gcp-keys.json
