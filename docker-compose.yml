@@ -7,8 +7,6 @@ services:
           - .env
         volumes:
           - ./config:/app/config
-        stdin_open: true
-        tty: true
         environment:
           - PYTHONUNBUFFERED=1
-        command: python main.py
+        command: streamlit run main.py --server.port 8502 --server.headless true

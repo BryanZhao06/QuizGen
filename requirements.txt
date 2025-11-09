@@ -1,9 +1,9 @@
 langchain
 wikipedia
 langchain-community
-langchain-openai
 langchain-anthropic
 langchain-google_genai
 python-dotenv
 pydantic
 ddgs
+streamlit
