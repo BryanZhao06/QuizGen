@@ -1,4 +1,3 @@
-from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
@@ -9,7 +8,7 @@ import json
 import sys
 import streamlit as st
 
-load_dotenv()
+api_key = st.secrets["api_keys"]["GOOGLE_API_KEY"]
 
 class QuizQuestion(BaseModel):
     """A single question for a quiz."""
@@ -22,7 +21,7 @@ class Quiz(BaseModel):
     topic: str = Field(description="The subject of the quiz.")
     questions: list[QuizQuestion] = Field(description="A list of 5 generated quiz questions.")
 
-llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", google_api_key=api_key)
 research_prompt = ChatPromptTemplate.from_messages(
     [
         (
@@ -158,12 +157,12 @@ if 'quiz' in st.session_state and st.session_state['quiz']:
         score_fraction = f"{user_score} / {total_questions}"
 
         if final_score_decimal < passing_score_decimal:
-            st.error(f"Your Final Score: {score_fraction}. You failed. :(")
+            st.error(f"Your Final Score: {score_fraction}. You failed. ☹️")
         elif final_score_decimal == max_score_decimal:
             st.balloons()
-            st.success(f"Your final score: {score_fraction}. Perfect Score! :D")
+            st.success(f"Your final score: {score_fraction}. Perfect Score! 🥳")
         else:
-            st.success(f"Your final score: {user_score}. You passed. :)")
+            st.success(f"Your final score: {user_score}. You passed. 🙂")
         
         st.divider()
         st.header("Review Your Answers")
