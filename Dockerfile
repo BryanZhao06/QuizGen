@@ -7,6 +7,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
+COPY ./config/gcp-keys.json /app/config/gcp-keys.json
 
 EXPOSE 8000
 
