@@ -6,9 +6,11 @@ from langchain_classic.agents import AgentExecutor, create_tool_calling_agent
 from tools import search_tool, wiki_tool
 import json
 import sys
+import os
 import streamlit as st
 
-api_key = st.secrets["api_keys"]["GOOGLE_API_KEY"]
+import os
+api_key = os.environ.get("GOOGLE_API_KEY")
 
 class QuizQuestion(BaseModel):
     """A single question for a quiz."""
