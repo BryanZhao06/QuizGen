@@ -9,7 +9,6 @@ import sys
 import os
 import streamlit as st
 
-import os
 api_key = os.environ.get("GOOGLE_API_KEY")
 
 class QuizQuestion(BaseModel):
