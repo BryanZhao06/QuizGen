@@ -51,12 +51,16 @@ research_executor = AgentExecutor(
 quiz_gen_prompt = ChatPromptTemplate.from_messages(
     [
         (
-            "system",
+           "system",
             """
-            You are an expert quiz generator. Given the following research,
-            create a 5-question multiple-choice quiz based *only* on that information.
-            The topic of the quiz should be the user's original requested topic.
-            """ 
+            You are an expert quiz generator. Create a 5-question multiple-choice quiz 
+            on the user's topic. 
+            
+            Use the provided research information as your primary source of truth. 
+            If the research information is empty, incomplete, or unavailable, 
+            fall back to your own accurate internal knowledge to generate high-quality, 
+            factual questions about the topic. Do not include options like 'Information not provided'.
+            """
         ),
         ("human", "Topic: {topic}\n\nResarch Information:\n{research_content}"),
     ]
