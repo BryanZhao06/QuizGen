@@ -9,4 +9,4 @@ services:
           - ./config:/app/config
         environment:
           - PYTHONUNBUFFERED=1
-        command: streamlit run main.py --server.port 8502 --server.headless true
+        command: streamlit run src/main.py --server.port 8502 --server.headless true
