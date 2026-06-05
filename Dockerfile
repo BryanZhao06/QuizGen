@@ -2,11 +2,11 @@ FROM python:3.11-slim
 
 WORKDIR /app/src
 
-COPY requirements.txt /app/
+COPY requirements.txt .
 
 RUN pip install -r /app/requirements.txt
 
-COPY src/ /app/src/
+COPY src/ ./src/
 
 EXPOSE 8000
 
