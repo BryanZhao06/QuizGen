@@ -106,7 +106,11 @@ if 'quiz' not in st.session_state:
             with st.spinner(f"Researching '{topic}' and building your quiz..."):
                 try:
                     final_quiz: Quiz = chain.invoke({"topic": topic})
-                    st.session_state['quiz'] = final_quiz
+                    if "no information" in final_quiz.questions[0].question.lower() or \
+                    "no information" in final_quiz.questions[0].answer.lower():
+                        st.warning("⚠️ The research agent timed out due to API rate limits. Please wait a few seconds and try again!")
+                    else:
+                        st.session_state['quiz'] = final_quiz
                 except Exception as e:
                     st.session_state['quiz'] = None
                     st.error(f"An error occurred: {e}")
