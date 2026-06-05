@@ -45,6 +45,7 @@ research_executor = AgentExecutor(
     agent=research_agent,
     tools=tools,
     verbose=False
+    max_iterations=2
 )
 
 quiz_gen_prompt = ChatPromptTemplate.from_messages(
