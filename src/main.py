@@ -44,7 +44,7 @@ research_agent = create_tool_calling_agent(llm, tools, research_prompt)
 research_executor = AgentExecutor(
     agent=research_agent,
     tools=tools,
-    verbose=False
+    verbose=False,
     max_iterations=2
 )
 
