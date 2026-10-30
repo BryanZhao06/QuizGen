@@ -1,9 +1,12 @@
+version: '3.8'
+
 services:
   redis:
     image: redis:7-alpine
     container_name: quizgen_redis
     ports:
-      - "6380:6379"
+      - "127.0.0.1:6380:6379"
+    restart: unless-stopped
 
   api:
     build: .
@@ -12,6 +15,7 @@ services:
       - "8000:8000"
     environment:
       - REDIS_URL=redis://redis:6379/0
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
     depends_on:
       - redis
+    restart: unless-stopped
