@@ -1,12 +1,17 @@
 services:
-    ai-agent:
-        build: .
-        ports:
-          - '8502:8502'
-        env_file:
-          - .env
-        volumes:
-          - ./config:/app/config
-        environment:
-          - PYTHONUNBUFFERED=1
-        command: streamlit run main.py --server.port 8502 --server.headless true
+  redis:
+    image: redis:7-alpine
+    container_name: quizgen_redis
+    ports:
+      - "6380:6379"
+
+  api:
+    build: .
+    container_name: quizgen_api
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    depends_on:
+      - redis

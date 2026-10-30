@@ -1,0 +1,27 @@
+[
+  {
+    "id": "os_concurrency",
+    "topic": "Operating Systems",
+    "context": "A race condition occurs when two or more threads can access shared data and try to change it simultaneously. Because the thread scheduling algorithm can swap between threads at any time, you cannot know the order in which the threads will attempt to access the shared data. To prevent race conditions, critical sections must be protected using synchronization mechanisms such as mutexes, semaphores, or atomic instructions. Failure to do so leads to non-deterministic bugs and memory corruption."
+  },
+  {
+    "id": "redis_persistence",
+    "topic": "Database Internals",
+    "context": "Redis provides two primary persistence mechanisms: RDB (Redis Database) snapshots and AOF (Append Only File) logs. RDB creates point-in-time snapshots of the dataset at configured intervals, which minimizes disk write overhead during execution. AOF logs every write command received by the server sequentially, allowing replay upon server restart to recover state. AOF guarantees higher durability but typically produces larger files and incurs slower restoration times compared to RDB."
+  },
+  {
+    "id": "raft_consensus",
+    "topic": "Distributed Systems",
+    "context": "The Raft consensus algorithm decomposes replicated state machine management into three discrete subproblems: leader election, log replication, and safety. A cluster designates exactly one leader at a time, which accepts client write requests, creates log entries, and synchronizes them across a majority quorum of follower nodes. If a leader node fails or experiences network partitioning, followers transition to candidate status after an election timeout and initiate a new voting term using randomized timers to prevent split-vote scenarios."
+  },
+  {
+    "id": "tcp_flow_congestion",
+    "topic": "Computer Networking",
+    "context": "Transmission Control Protocol (TCP) uses flow control and congestion control to manage packet transmission rates. Flow control uses a sliding window advertised by the receiver to prevent a sender from overwhelming the receiver's buffer space. Congestion control protects intermediate network routers and links, using algorithms like slow start, congestion avoidance, fast retransmit, and fast recovery to adjust the sender's congestion window (cwnd) dynamically based on packet loss and round-trip delay."
+  },
+  {
+    "id": "transformer_attention",
+    "topic": "Machine Learning",
+    "context": "The Transformer architecture relies on the scaled dot-product self-attention mechanism to model token interactions regardless of distance in a sequence. Input representations are mapped into query (Q), key (K), and value (V) matrices through learned linear projections. Attention scores are calculated by taking the dot product of Q and K transposed, dividing by the square root of the key dimension d_k to prevent vanishing gradients in the softmax function, and multiplying the resulting softmax probabilities by the value matrix V."
+  }
+]
