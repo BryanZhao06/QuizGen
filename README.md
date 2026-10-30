@@ -1,19 +1,18 @@
-```markdown
 # QuizGen — Production Assessment Engine & Evaluation Harness
 
-A production-grade, self-correcting educational assessment engine built with **FastAPI**, **Pydantic**, **Redis**, and the **Google GenAI SDK**[cite: 1]. 
+A production-grade, self-correcting educational assessment engine built with **FastAPI**, **Pydantic**, **Redis**, and the **Google GenAI SDK**. 
 
-The platform guarantees deterministic data schemas, validates grounding against hallucinated content through an automated self-correcting reflection loop, caches duplicate requests via SHA-256 Redis digests in under 25ms, and audits generation quality with an offline LLM-as-a-judge evaluation harness[cite: 1].
+The platform guarantees deterministic data schemas, validates grounding against hallucinated content through an automated self-correcting reflection loop, caches duplicate requests via SHA-256 Redis digests in under 25ms, and audits generation quality with an offline LLM-as-a-judge evaluation harness.
 
 ---
 
 ## ⚡ Architectural Highlights
 
-* **Deterministic Contract Enforcement**: Enforces strict Pydantic models (`QuizResponse`, `GeneratedQuestion`) across generation passes to eliminate malformed JSON responses and type drift[cite: 1].
-* **Self-Correcting Grounding Audit**: Cross-references every generated question and distractor option against source text via substring quote verification; automatically triggers a targeted regeneration loop if grounding fails[cite: 1].
-* **Sub-25ms SHA-256 Redis Cache**: Hashes normalized request tuples `(topic, count, context)` into SHA-256 digest keys, returning warm cache hits in **~24ms** (down from a ~1,978ms cold start, a **98.8% latency reduction**)[cite: 1].
-* **Automated LLM-as-a-Judge Evaluation Suite**: Features an offline benchmark runner (`benchmarks/run_evals.py`) scoring test sets across technical domains for faithfulness, answer unambiguity, and hallucination rates[cite: 1].
-* **Containerized Infrastructure**: Dockerized Redis broker and ASGI FastAPI runner designed for zero-configuration local orchestration[cite: 1].
+* **Deterministic Contract Enforcement**: Enforces strict Pydantic models (`QuizResponse`, `GeneratedQuestion`) across generation passes to eliminate malformed JSON responses and type drift.
+* **Self-Correcting Grounding Audit**: Cross-references every generated question and distractor option against source text via substring quote verification; automatically triggers a targeted regeneration loop if grounding fails.
+* **Sub-25ms SHA-256 Redis Cache**: Hashes normalized request tuples `(topic, count, context)` into SHA-256 digest keys, returning warm cache hits in **~24ms** (down from a ~1,978ms cold start, a **98.8% latency reduction**).
+* **Automated LLM-as-a-Judge Evaluation Suite**: Features an offline benchmark runner (`benchmarks/run_evals.py`) scoring test sets across technical domains for faithfulness, answer unambiguity, and hallucination rates.
+* **Containerized Infrastructure**: Dockerized Redis broker and ASGI FastAPI runner designed for zero-configuration local orchestration.
 
 ---
 
@@ -21,27 +20,25 @@ The platform guarantees deterministic data schemas, validates grounding against 
 
 ```mermaid
 flowchart TD
-    Client[Client / Consumer] -->|POST /api/v1/generate| API[FastAPI Server]
-    API --> CacheCheck{SHA-256 Redis Cache}
+    Client[Client / Consumer] -->|POST generate| API[FastAPI Engine]
+    API --> CacheCheck{Cache Lookup}
     
-    CacheCheck -->|Cache Hit ~24ms| ReturnCached[Return Cached QuizResponse]
+    CacheCheck -->|Cache Hit 24ms| ReturnCached[Return Cached Response]
     ReturnCached --> Client
     
-    CacheCheck -->|Cache Miss| LLMGen[Gemini 3.5 Flash-Lite Generation]
-    LLMGen --> SchemaValidate{Pydantic Schema Validation}
+    CacheCheck -->|Cache Miss| Generator[Gemini 3.5 Generation]
+    Generator --> SchemaCheck{Schema Validation}
     
-    SchemaValidate -->|Valid| GroundingAudit{Grounding & Citation Verifier}
-    SchemaValidate -->|Malformed JSON| LLMGen
+    SchemaCheck -->|Invalid| Generator
+    SchemaCheck -->|Valid| Verifier{Grounding Verifier}
     
-    GroundingAudit -->|Verified Grounded| CacheStore[Store in Redis TTL: 24h]
-    GroundingAudit -->|Grounding Failure / Hallucination| RefinementLoop[Self-Correction Reflection Prompt]
-    RefinementLoop --> GroundingAudit
+    Verifier -->|Hallucination Detected| SelfCorrect[Self-Correction Loop]
+    SelfCorrect --> Verifier
     
-    CacheStore --> ReturnNew[Return Fresh QuizResponse ~1.9s]
-    ReturnNew --> Client
-
+    Verifier -->|Grounded| StoreCache[Store in Redis TTL 24h]
+    StoreCache --> ReturnFresh[Return Fresh Response 1.9s]
+    ReturnFresh --> Client
 ```
-
 ---
 
 ## 📊 Evaluation & Latency Metrics
@@ -53,17 +50,9 @@ Tested across 5 complex computer science domains (Operating Systems, Database In
 | Metric | Measured Score | Target Threshold | Status |
 | --- | --- | --- | --- |
 | **Faithfulness Score** | **100.00%** | > 95.0% | PASS
-
- |
 | **Unambiguity Score** | **100.00%** | > 95.0% | PASS
-
- |
 | **Hallucination Rate** | **0.00%** | < 5.0% | PASS
-
- |
 | **Schema Compliance** | **100.00%** | 100.0% | PASS
-
- |
 
 ### Latency Profiles
 
@@ -102,8 +91,6 @@ QuizGen/
 └── README.md                    # System architecture & documentation
 
 ```
-
----
 
 ## 🚀 Quickstart
 
@@ -236,9 +223,3 @@ Hallucination Rate:        0.00% (Target: <5%)
     }
   ]
 }
-
-```
-
-```
-
-```
