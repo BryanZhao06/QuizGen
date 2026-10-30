@@ -1,4 +1,4 @@
-# QuizGen — Production Assessment Engine & Evaluation Harness
+# QuizGen — Assessment Engine & Evaluation Platform
 
 A production-grade, self-correcting educational assessment engine built with **FastAPI**, **Pydantic**, **Redis**, and the **Google GenAI SDK**. 
 
